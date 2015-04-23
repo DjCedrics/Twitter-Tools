@@ -52,7 +52,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.Scanner;
 import java.awt.event.MouseAdapter;
 
@@ -73,7 +72,6 @@ public class TwitterGUIv2 {
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
-	private JTextField textField_6;
 
 	/**
 	 * Launch the application.
@@ -93,24 +91,18 @@ public class TwitterGUIv2 {
 
 	/**
 	 * Create the application.
-	 * @throws SQLException 
 	 * @wbp.parser.entryPoint
 	 */
-	public TwitterGUIv2() throws SQLException {
+	public TwitterGUIv2() {
 		initialize();
 	}
 	
-	
+
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() throws SQLException {
-		TwitterDB database = new TwitterDB();
-		System.out.println( database.getUsername(3) );
-		System.out.println( database.getUserID(3) );
-		System.out.println( database.getToken(3) );
-		System.out.println( database.getTokenSecret(3) );
+	private void initialize() {
 		Twitter twitter = TwitterFactory.getSingleton();
 		frmTwitterToolsV = new JFrame();
 		frmTwitterToolsV.setBackground(Color.WHITE);
@@ -209,7 +201,7 @@ public class TwitterGUIv2 {
 				
 			}
 		});
-		btnCredits.setBounds(169, 160, 97, 25);
+		btnCredits.setBounds(166, 160, 97, 25);
 		mainMenu.add(btnCredits);
 		
 		JButton btnExit = new JButton("Exit");
@@ -486,27 +478,24 @@ public class TwitterGUIv2 {
 		
 		JLabel lblSendFollowersTo = new JLabel("Enter username whose followers will be copied");
 		lblSendFollowersTo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSendFollowersTo.setBounds(59, 13, 311, 16);
+		lblSendFollowersTo.setBounds(39, 99, 311, 16);
 		multiFollow.add(lblSendFollowersTo);
 		
 		textField_2 = new JTextField();
-		textField_2.setBounds(157, 41, 134, 28);
+		textField_2.setBounds(135, 127, 134, 28);
 		multiFollow.add(textField_2);
 		textField_2.setColumns(10);
 		
 		JButton btnDoTheHarlem = new JButton("Do the harlem shake");
 		btnDoTheHarlem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AccessToken token = new AccessToken( database.getToken(3), database.getTokenSecret(3) );
-				Twitter twitter = new TwitterFactory().getInstance( token );
-				int followerCount = -1;
+				
 				try {
-					followerCount = Integer.parseInt( textField_6.getText() );
-					PagableResponseList<User> followers = twitter.getFollowersList( textField_2.getText(), -1, followerCount );
+					PagableResponseList<User> followers = twitter.getFollowersList( textField.getText(), -1, 10 );
 					
-					System.out.println( "User: " + textField_2.getText()); 
+					System.out.println( "User: " + textField.getText()); 
 					System.out.println( followers );
-					for ( int i = 0; i < followerCount; i++  )
+					for ( int i = 0; i < 10; i++  )
 					{
 						System.out.println( followers.get(i));
 						twitter.createFriendship( followers.get(i).getScreenName() );
@@ -523,7 +512,7 @@ public class TwitterGUIv2 {
 
 				
 				
-				JOptionPane.showMessageDialog(null, "Copied last" + followerCount + " followers of @" + textField_2.getText(), "Done!", JOptionPane.INFORMATION_MESSAGE );
+				JOptionPane.showMessageDialog(null, "Copied last 10 followers of @" + textField.getText(), "Done!", JOptionPane.INFORMATION_MESSAGE );
 				mainMenu.setVisible( true );
 				multiFollow.setVisible( false );
 //				
@@ -594,7 +583,7 @@ public class TwitterGUIv2 {
 //				
 			}
 		});
-		btnDoTheHarlem.setBounds(143, 171, 174, 29);
+		btnDoTheHarlem.setBounds(117, 167, 174, 29);
 		multiFollow.add(btnDoTheHarlem);
 		
 		JButton btnBack_4 = new JButton("Back");
@@ -604,18 +593,8 @@ public class TwitterGUIv2 {
 				mainMenu.setVisible( true );
 			}
 		});
-		btnBack_4.setBounds(174, 213, 117, 29);
+		btnBack_4.setBounds(135, 208, 117, 29);
 		multiFollow.add(btnBack_4);
-		
-		JLabel lblEnterHowMany_1 = new JLabel("Enter how many followers will be copied");
-		lblEnterHowMany_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEnterHowMany_1.setBounds(80, 77, 275, 50);
-		multiFollow.add(lblEnterHowMany_1);
-		
-		textField_6 = new JTextField();
-		textField_6.setBounds(174, 115, 116, 22);
-		multiFollow.add(textField_6);
-		textField_6.setColumns(10);
 		
 		JLabel lblNewLabel_8 = new JLabel("");
 		lblNewLabel_8.setIcon(new ImageIcon("/Users/djcedrics/Documents/Eclipse Workspace/TwitterTest/background.png"));
