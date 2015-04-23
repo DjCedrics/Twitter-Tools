@@ -10,12 +10,5 @@
 	<classpathentry kind="lib" path="C:/Users/DjCedrics/Eclipse/TwitterTest/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/DjCedrics/Eclipse/TwitterTest/jna-4.1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/DjCedrics/Eclipse/Twitter-Tools/mysql-connector-java-5.1.35/mysql-connector-java-5.1.35-bin.jar"/>
-	<classpathentry kind="lib" path="/Users/djcedrics/Documents/Eclipse Workspace/TwitterTest/twitter4j-4.0.3/lib/twitter4j-async-4.0.3.jar"/>
-	<classpathentry kind="lib" path="/Users/djcedrics/Documents/Eclipse Workspace/TwitterTest/twitter4j-4.0.3/lib/twitter4j-core-4.0.3.jar"/>
-	<classpathentry kind="lib" path="/Users/djcedrics/Documents/Eclipse Workspace/TwitterTest/twitter4j-4.0.3/lib/twitter4j-media-support-4.0.3.jar"/>
-	<classpathentry kind="lib" path="/Users/djcedrics/Documents/Eclipse Workspace/TwitterTest/twitter4j-4.0.3/lib/twitter4j-stream-4.0.3.jar"/>
-	<classpathentry kind="lib" path="/Users/djcedrics/Documents/Eclipse Workspace/TwitterTest/jaco-mp3-player-0.9.3.jar"/>
-	<classpathentry kind="lib" path="/Users/djcedrics/Documents/Eclipse Workspace/TwitterTest/jl1.0.1.jar"/>
-	<classpathentry kind="lib" path="/Users/djcedrics/Documents/Eclipse Workspace/TwitterTest/jna-4.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
