@@ -61,6 +61,17 @@ import com.sun.jna.Native;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
 import javax.swing.JComboBox;
+import javax.swing.BoxLayout;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import java.awt.GridLayout;
+import java.awt.FlowLayout;
+import net.miginfocom.swing.MigLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import com.jgoodies.forms.factories.FormFactory;
 
 public class TwitterGUIv2 {
 
@@ -78,6 +89,7 @@ public class TwitterGUIv2 {
 
 	
 	private int currentIndex;
+	private JTextField textField_7;
 	
 	/**
 	 * Launch the application.
@@ -129,6 +141,7 @@ public class TwitterGUIv2 {
 		JPanel credits = new JPanel();
 		JPanel multiFollow = new JPanel();
 		JPanel spamTweet = new JPanel();
+		JPanel sendFollowers = new JPanel();
 		credits.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -242,6 +255,16 @@ public class TwitterGUIv2 {
 				spamTweet.setVisible( true );
 			}
 		});
+		
+		JButton btnNewButton = new JButton("Send Followers");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mainMenu.setVisible( false );
+				sendFollowers.setVisible( true );
+			}
+		});
+		btnNewButton.setBounds(415, 146, 138, 25);
+		mainMenu.add(btnNewButton);
 		btnSpamTweet.setBounds(424, 72, 117, 29);
 		mainMenu.add(btnSpamTweet);
 		
@@ -490,18 +513,34 @@ public class TwitterGUIv2 {
 		
 		JLabel lblSendFollowersTo = new JLabel("Enter username whose followers will be copied");
 		lblSendFollowersTo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSendFollowersTo.setBounds(138, 110, 311, 16);
+		lblSendFollowersTo.setBounds(160, 74, 311, 16);
 		multiFollow.add(lblSendFollowersTo);
 		
+		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// EXPLICITLY PLUS 1 IN ORDER TO MATCH DATABASE!!!!!!!
+				currentIndex = comboBox_1.getSelectedIndex() + 1;
+				System.out.println( "Current index " + currentIndex );
+			}
+		});
+		
+		JLabel lblSelectInstance_1 = new JLabel("Select instance");
+		lblSelectInstance_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectInstance_1.setBounds(230, 13, 150, 16);
+		multiFollow.add(lblSelectInstance_1);
+		comboBox_1.setBounds(246, 30, 134, 22);
+		multiFollow.add(comboBox_1);
+		
 		textField_2 = new JTextField();
-		textField_2.setBounds(246, 153, 134, 28);
+		textField_2.setBounds(246, 103, 134, 28);
 		multiFollow.add(textField_2);
 		textField_2.setColumns(10);
 		
 		JButton btnDoTheHarlem = new JButton("Do the harlem shake");
 		btnDoTheHarlem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AccessToken token = new AccessToken( database.getToken(3), database.getTokenSecret(3) );
+				AccessToken token = new AccessToken( database.getToken(currentIndex), database.getTokenSecret(currentIndex) );
 				Twitter twitter = new TwitterFactory().getInstance( token );
 				int followerCount = -1;
 				try {
@@ -509,7 +548,6 @@ public class TwitterGUIv2 {
 					PagableResponseList<User> followers = twitter.getFollowersList( textField_2.getText(), -1, followerCount );
 					
 					System.out.println( "User: " + textField_2.getText()); 
-					System.out.println( followers );
 					for ( int i = 0; i < followerCount; i++  )
 					{
 						System.out.println( followers.get(i));
@@ -598,7 +636,7 @@ public class TwitterGUIv2 {
 //				
 			}
 		});
-		btnDoTheHarlem.setBounds(216, 292, 174, 29);
+		btnDoTheHarlem.setBounds(230, 292, 174, 29);
 		multiFollow.add(btnDoTheHarlem);
 		
 		JButton btnBack_4 = new JButton("Back");
@@ -608,22 +646,22 @@ public class TwitterGUIv2 {
 				mainMenu.setVisible( true );
 			}
 		});
-		btnBack_4.setBounds(246, 334, 117, 29);
+		btnBack_4.setBounds(263, 334, 117, 29);
 		multiFollow.add(btnBack_4);
 		
 		JLabel lblEnterHowMany_1 = new JLabel("Enter how many followers will be copied");
 		lblEnterHowMany_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEnterHowMany_1.setBounds(174, 194, 275, 50);
+		lblEnterHowMany_1.setBounds(177, 144, 275, 50);
 		multiFollow.add(lblEnterHowMany_1);
 		
 		textField_6 = new JTextField();
-		textField_6.setBounds(246, 257, 116, 22);
+		textField_6.setBounds(246, 192, 134, 22);
 		multiFollow.add(textField_6);
 		textField_6.setColumns(10);
 		
 		JLabel lblNewLabel_8 = new JLabel("");
 		lblNewLabel_8.setIcon(new ImageIcon("resources/background.png"));
-		lblNewLabel_8.setBounds(0, 0, 481, 278);
+		lblNewLabel_8.setBounds(0, 0, 603, 376);
 		multiFollow.add(lblNewLabel_8);
 		
 		
@@ -653,7 +691,7 @@ public class TwitterGUIv2 {
 			public void actionPerformed(ActionEvent arg0) {
 				// EXPLICITLY PLUS 1 IN ORDER TO MATCH DATABASE!!!!!!!
 				currentIndex = comboBox.getSelectedIndex() + 1;
-				System.out.println( "Current index " + comboBox.getSelectedIndex() );
+				System.out.println( "Current index " + currentIndex );
 			}
 		});
 		comboBox.setBounds(243, 29, 134, 22);
@@ -661,7 +699,7 @@ public class TwitterGUIv2 {
 		for ( int i = 1 ; i <= database.getLineCount() ; i++ )
 		{
 			comboBox.addItem( database.getUsername(i));
-			
+			comboBox_1.addItem( database.getUsername(i));
 		}
 		
 		spamTweet.add(comboBox);
@@ -741,5 +779,67 @@ public class TwitterGUIv2 {
 		lblNewLabel_9.setIcon(new ImageIcon("resources/background.png"));
 		lblNewLabel_9.setBounds(0, 0, 603, 376);
 		spamTweet.add(lblNewLabel_9);
+		
+
+		frmTwitterToolsV.getContentPane().add(sendFollowers, "name_9460502542681");
+		sendFollowers.setLayout(null);
+		
+		JLabel label_2 = new JLabel("");
+		label_2.setBounds(0, 8, 0, 0);
+		sendFollowers.add(label_2);
+		
+		JLabel lblEnterUsername = new JLabel("Enter username");
+		lblEnterUsername.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEnterUsername.setBounds(272, 159, 116, 16);
+		sendFollowers.add(lblEnterUsername);
+		
+		textField_7 = new JTextField();
+		textField_7.setBounds(272, 188, 116, 22);
+		sendFollowers.add(textField_7);
+		textField_7.setColumns(10);
+		
+		JLabel lblUsernameYouEntered = new JLabel("Username you entered will get " + database.getLineCount() + " followers");
+		lblUsernameYouEntered.setBounds(201, 238, 276, 16);
+		sendFollowers.add(lblUsernameYouEntered);
+		
+		JButton btnSend = new JButton("Send");
+		btnSend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String username = textField_7.getText();
+				
+				for ( int i = 1 ; i <= database.getLineCount() ; i++ )
+				{
+					AccessToken token = new AccessToken( database.getToken(i), database.getTokenSecret(i) );
+					Twitter twitter = new TwitterFactory().getInstance( token );
+					try {
+						twitter.createFriendship( username );
+					} catch (TwitterException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+				JOptionPane.showMessageDialog(null, "Sent " + database.getLineCount() + " followers to @" + username + " !", "Done!", JOptionPane.INFORMATION_MESSAGE );
+				
+				
+			}
+		});
+		btnSend.setBounds(272, 290, 116, 25);
+		sendFollowers.add(btnSend);
+		
+		JButton btnBack_6 = new JButton("Back");
+		btnBack_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendFollowers.setVisible( false );
+				mainMenu.setVisible( true );
+			}
+		});
+		btnBack_6.setBounds(272, 322, 116, 25);
+		sendFollowers.add(btnBack_6);
+		
+		JLabel lblNewLabel_10 = new JLabel("");
+		lblNewLabel_10.setIcon(new ImageIcon("resources/background.png"));
+		lblNewLabel_10.setBounds(0, 0, 603, 376);
+		sendFollowers.add(lblNewLabel_10);
 	}
 }
