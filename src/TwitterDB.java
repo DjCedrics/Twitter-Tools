@@ -10,10 +10,9 @@ public class TwitterDB {
 	Connection connection = null;
 	Statement stmt = null;
 	ResultSet rs = null;	
-	
+	int linecount;
 	public TwitterDB()
 	{
-		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -48,7 +47,21 @@ public class TwitterDB {
 			e.printStackTrace();
 		}
 		
+		try {
+			rs = stmt.executeQuery("SELECT MAX(id) AS id FROM users");
+			rs.next();
+			linecount = Integer.parseInt(rs.getString("id"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		
+	}
+	
+	public int getLineCount()
+	{
+		return linecount;
 	}
 	
 	public String getUsername( int id ) throws SQLException

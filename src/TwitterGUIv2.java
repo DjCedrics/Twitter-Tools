@@ -60,6 +60,7 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
+import javax.swing.JComboBox;
 
 public class TwitterGUIv2 {
 
@@ -75,6 +76,9 @@ public class TwitterGUIv2 {
 	private JTextField textField_5;
 	private JTextField textField_6;
 
+	
+	private int currentIndex;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -116,7 +120,7 @@ public class TwitterGUIv2 {
 		frmTwitterToolsV.setBackground(Color.WHITE);
 		frmTwitterToolsV.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\DjCedrics\\Eclipse\\TwitterTest\\twitterlogo.png"));
 		frmTwitterToolsV.setTitle("Twitter Tools v1.0");
-		frmTwitterToolsV.setBounds(100, 100, 450, 300);
+		frmTwitterToolsV.setBounds(100, 100, 621, 421);
 		frmTwitterToolsV.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmTwitterToolsV.getContentPane().setLayout(new CardLayout(0, 0));
 		JPanel retweet = new JPanel();
@@ -139,7 +143,7 @@ public class TwitterGUIv2 {
 		lblTwitterTools.setForeground(SystemColor.scrollbar);
 		lblTwitterTools.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTwitterTools.setFont(new Font("Adobe Caslon Pro", lblTwitterTools.getFont().getStyle(), 32));
-		lblTwitterTools.setBounds(83, 13, 256, 46);
+		lblTwitterTools.setBounds(176, 13, 256, 46);
 		mainMenu.add(lblTwitterTools);
 		JPanel unfollow = new JPanel();
 		JButton btnFollow = new JButton("Follow");
@@ -149,7 +153,7 @@ public class TwitterGUIv2 {
 				follow.setVisible(true);
 			}
 		});
-		btnFollow.setBounds(51, 88, 97, 25);
+		btnFollow.setBounds(73, 108, 97, 25);
 		mainMenu.add(btnFollow);
 		JPanel favorite = new JPanel();
 		JButton btnUnfollow = new JButton("Unfollow");
@@ -160,7 +164,7 @@ public class TwitterGUIv2 {
 				mainMenu.setVisible( false );
 			}
 		});
-		btnUnfollow.setBounds(278, 88, 97, 25);
+		btnUnfollow.setBounds(73, 70, 97, 25);
 		mainMenu.add(btnUnfollow);
 		
 		JButton btnFavorite = new JButton("Favorite");
@@ -171,7 +175,7 @@ public class TwitterGUIv2 {
 				favorite.setVisible( true );
 			}
 		});
-		btnFavorite.setBounds(51, 126, 97, 25);
+		btnFavorite.setBounds(73, 146, 97, 25);
 		mainMenu.add(btnFavorite);
 		
 		JButton btnRetweet = new JButton("Retweet");
@@ -183,7 +187,7 @@ public class TwitterGUIv2 {
 				
 			}
 		});
-		btnRetweet.setBounds(278, 126, 97, 25);
+		btnRetweet.setBounds(73, 184, 97, 25);
 		mainMenu.add(btnRetweet);
 		
 		JButton btnCredits = new JButton("Credits");
@@ -209,7 +213,7 @@ public class TwitterGUIv2 {
 				
 			}
 		});
-		btnCredits.setBounds(169, 160, 97, 25);
+		btnCredits.setBounds(261, 300, 97, 25);
 		mainMenu.add(btnCredits);
 		
 		JButton btnExit = new JButton("Exit");
@@ -218,7 +222,7 @@ public class TwitterGUIv2 {
 				System.exit(0);
 			}
 		});
-		btnExit.setBounds(166, 198, 97, 25);
+		btnExit.setBounds(261, 338, 97, 25);
 		mainMenu.add(btnExit);
 		
 		JButton btnMultiFollow = new JButton("Multi Follow");
@@ -228,7 +232,7 @@ public class TwitterGUIv2 {
 				multiFollow.setVisible( true );
 			}
 		});
-		btnMultiFollow.setBounds(51, 158, 117, 29);
+		btnMultiFollow.setBounds(424, 106, 117, 29);
 		mainMenu.add(btnMultiFollow);
 		
 		JButton btnSpamTweet = new JButton("Spam Tweet");
@@ -238,12 +242,12 @@ public class TwitterGUIv2 {
 				spamTweet.setVisible( true );
 			}
 		});
-		btnSpamTweet.setBounds(278, 158, 117, 29);
+		btnSpamTweet.setBounds(424, 72, 117, 29);
 		mainMenu.add(btnSpamTweet);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("/Users/djcedrics/Documents/Eclipse Workspace/TwitterTest/background.png"));
-		lblNewLabel.setBounds(0, 0, 432, 277);
+		lblNewLabel.setIcon(new ImageIcon("background.png"));
+		lblNewLabel.setBounds(0, 0, 603, 376);
 		mainMenu.add(lblNewLabel);
 		
 		frmTwitterToolsV.getContentPane().add(follow, "name_6719163685498");
@@ -256,13 +260,13 @@ public class TwitterGUIv2 {
 		JFormattedTextField frmtdtxtfldExampleFiratsivrikaya = new JFormattedTextField();
 		frmtdtxtfldExampleFiratsivrikaya.setBackground(SystemColor.textHighlight);
 		frmtdtxtfldExampleFiratsivrikaya.setToolTipText("Example: firatsivrikaya");
-		frmtdtxtfldExampleFiratsivrikaya.setBounds(122, 123, 185, 22);
+		frmtdtxtfldExampleFiratsivrikaya.setBounds(220, 225, 185, 22);
 		follow.add(frmtdtxtfldExampleFiratsivrikaya);
 		
 		JLabel lblEnterUsernameTo = new JLabel("Enter username to be followed");
 		lblEnterUsernameTo.setFont(new Font("Verdana", Font.PLAIN, 13));
 		lblEnterUsernameTo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEnterUsernameTo.setBounds(85, 79, 255, 31);
+		lblEnterUsernameTo.setBounds(187, 181, 255, 31);
 		follow.add(lblEnterUsernameTo);
 		
 		
@@ -282,7 +286,7 @@ public class TwitterGUIv2 {
 				}
 			}
 		});
-		btnFollow_1.setBounds(166, 169, 97, 25);
+		btnFollow_1.setBounds(268, 286, 97, 25);
 		follow.add(btnFollow_1);
 		
 		JButton btnBack = new JButton("Back");
@@ -292,11 +296,11 @@ public class TwitterGUIv2 {
 				mainMenu.setVisible(true);
 			}
 		});
-		btnBack.setBounds(166, 207, 97, 25);
+		btnBack.setBounds(268, 324, 97, 25);
 		follow.add(btnBack);
 		
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon("C:\\Users\\DjCedrics\\Eclipse\\TwitterTest\\background.png"));
+		label.setIcon(new ImageIcon("resources/background.png"));
 		label.setBounds(0, 0, 1920, 1200);
 		follow.add(label);
 		
@@ -306,12 +310,12 @@ public class TwitterGUIv2 {
 		
 		JLabel lblNewLabel_2 = new JLabel("Enter Tweet ID to be favorited");
 		lblNewLabel_2.setFont(new Font("Verdana", Font.PLAIN, 12));
-		lblNewLabel_2.setBounds(117, 101, 223, 16);
+		lblNewLabel_2.setBounds(209, 220, 223, 16);
 		favorite.add(lblNewLabel_2);
 		
 		textField = new JTextField();
 		textField.setBackground(SystemColor.menu);
-		textField.setBounds(160, 130, 116, 22);
+		textField.setBounds(258, 249, 116, 22);
 		favorite.add(textField);
 		textField.setColumns(10);
 		
@@ -329,7 +333,7 @@ public class TwitterGUIv2 {
 				
 			}
 		});
-		btnFavorite_1.setBounds(170, 165, 97, 25);
+		btnFavorite_1.setBounds(270, 300, 97, 25);
 		favorite.add(btnFavorite_1);
 		
 		JButton btnBack_1 = new JButton("Back");
@@ -340,12 +344,12 @@ public class TwitterGUIv2 {
 				mainMenu.setVisible( true );
 			}
 		});
-		btnBack_1.setBounds(170, 203, 97, 25);
+		btnBack_1.setBounds(270, 338, 97, 25);
 		favorite.add(btnBack_1);
 		
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBounds(-685, 0, 1920, 1200);
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\DjCedrics\\Eclipse\\TwitterTest\\background.png"));
+		lblNewLabel_1.setIcon(new ImageIcon("resources/background.png"));
 		favorite.add(lblNewLabel_1);
 		
 		credits.setVisible( false );
@@ -355,11 +359,11 @@ public class TwitterGUIv2 {
 		JLabel lblNewLabel_4 = new JLabel("Enter username to be unfollowed: ");
 		lblNewLabel_4.setFont(new Font("Verdana", Font.PLAIN, 13));
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_4.setBounds(76, 93, 300, 44);
+		lblNewLabel_4.setBounds(171, 190, 300, 44);
 		unfollow.add(lblNewLabel_4);
 		
 		userName = new JTextField();
-		userName.setBounds(167, 138, 116, 22);
+		userName.setBounds(271, 247, 116, 22);
 		unfollow.add(userName);
 		userName.setColumns(10);
 		
@@ -377,7 +381,7 @@ public class TwitterGUIv2 {
 				
 			}
 		});
-		btnUnfollow_1.setBounds(179, 173, 97, 25);
+		btnUnfollow_1.setBounds(279, 282, 97, 25);
 		unfollow.add(btnUnfollow_1);
 		
 		JButton btnBack_2 = new JButton("Back");
@@ -387,12 +391,12 @@ public class TwitterGUIv2 {
 				mainMenu.setVisible( true );
 			}
 		});
-		btnBack_2.setBounds(179, 211, 97, 25);
+		btnBack_2.setBounds(279, 320, 97, 25);
 		unfollow.add(btnBack_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("");
-		lblNewLabel_3.setIcon(new ImageIcon("C:\\Users\\DjCedrics\\Eclipse\\TwitterTest\\background.png"));
-		lblNewLabel_3.setBounds(0, 0, 432, 255);
+		lblNewLabel_3.setIcon(new ImageIcon("resources/background.png"));
+		lblNewLabel_3.setBounds(0, 0, 603, 376);
 		unfollow.add(lblNewLabel_3);
 		
 
@@ -400,14 +404,14 @@ public class TwitterGUIv2 {
 		retweet.setLayout(null);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(163, 124, 116, 22);
+		textField_1.setBounds(268, 265, 116, 22);
 		retweet.add(textField_1);
 		textField_1.setColumns(10);
 		
 		JLabel lblNewLabel_6 = new JLabel("Enter Tweet ID to be retweeted");
 		lblNewLabel_6.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_6.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_6.setBounds(88, 97, 270, 16);
+		lblNewLabel_6.setBounds(190, 228, 270, 16);
 		retweet.add(lblNewLabel_6);
 		
 		JButton btnRetweet_1 = new JButton("Retweet");
@@ -423,7 +427,7 @@ public class TwitterGUIv2 {
 				}
 			}
 		});
-		btnRetweet_1.setBounds(173, 159, 97, 25);
+		btnRetweet_1.setBounds(279, 300, 97, 25);
 		retweet.add(btnRetweet_1);
 		
 		JButton btnBack_3 = new JButton("Back");
@@ -434,13 +438,13 @@ public class TwitterGUIv2 {
 				mainMenu.setVisible( true );
 			}
 		});
-		btnBack_3.setBounds(173, 199, 97, 25);
+		btnBack_3.setBounds(279, 338, 97, 25);
 		retweet.add(btnBack_3);
 			
 		
 		JLabel lblNewLabel_5 = new JLabel("New label");
-		lblNewLabel_5.setIcon(new ImageIcon("C:\\Users\\DjCedrics\\Eclipse\\TwitterTest\\background.png"));
-		lblNewLabel_5.setBounds(-290, 0, 722, 560);
+		lblNewLabel_5.setIcon(new ImageIcon("resources/background.png"));
+		lblNewLabel_5.setBounds(-290, 0, 893, 560);
 		retweet.add(lblNewLabel_5);
 		
 		JLabel label_1 = new JLabel("");
@@ -486,11 +490,11 @@ public class TwitterGUIv2 {
 		
 		JLabel lblSendFollowersTo = new JLabel("Enter username whose followers will be copied");
 		lblSendFollowersTo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSendFollowersTo.setBounds(59, 13, 311, 16);
+		lblSendFollowersTo.setBounds(138, 110, 311, 16);
 		multiFollow.add(lblSendFollowersTo);
 		
 		textField_2 = new JTextField();
-		textField_2.setBounds(157, 41, 134, 28);
+		textField_2.setBounds(246, 153, 134, 28);
 		multiFollow.add(textField_2);
 		textField_2.setColumns(10);
 		
@@ -594,7 +598,7 @@ public class TwitterGUIv2 {
 //				
 			}
 		});
-		btnDoTheHarlem.setBounds(143, 171, 174, 29);
+		btnDoTheHarlem.setBounds(216, 292, 174, 29);
 		multiFollow.add(btnDoTheHarlem);
 		
 		JButton btnBack_4 = new JButton("Back");
@@ -604,21 +608,21 @@ public class TwitterGUIv2 {
 				mainMenu.setVisible( true );
 			}
 		});
-		btnBack_4.setBounds(174, 213, 117, 29);
+		btnBack_4.setBounds(246, 334, 117, 29);
 		multiFollow.add(btnBack_4);
 		
 		JLabel lblEnterHowMany_1 = new JLabel("Enter how many followers will be copied");
 		lblEnterHowMany_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEnterHowMany_1.setBounds(80, 77, 275, 50);
+		lblEnterHowMany_1.setBounds(174, 194, 275, 50);
 		multiFollow.add(lblEnterHowMany_1);
 		
 		textField_6 = new JTextField();
-		textField_6.setBounds(174, 115, 116, 22);
+		textField_6.setBounds(246, 257, 116, 22);
 		multiFollow.add(textField_6);
 		textField_6.setColumns(10);
 		
 		JLabel lblNewLabel_8 = new JLabel("");
-		lblNewLabel_8.setIcon(new ImageIcon("/Users/djcedrics/Documents/Eclipse Workspace/TwitterTest/background.png"));
+		lblNewLabel_8.setIcon(new ImageIcon("resources/background.png"));
 		lblNewLabel_8.setBounds(0, 0, 481, 278);
 		multiFollow.add(lblNewLabel_8);
 		
@@ -627,27 +631,46 @@ public class TwitterGUIv2 {
 		spamTweet.setLayout(null);
 		
 		JLabel lblEnterUsernameWhose = new JLabel("Enter username whose followers would be spam tweeted");
-		lblEnterUsernameWhose.setBounds(47, 5, 355, 16);
+		lblEnterUsernameWhose.setBounds(144, 64, 355, 16);
 		spamTweet.add(lblEnterUsernameWhose);
 		
 		textField_3 = new JTextField();
-		textField_3.setBounds(152, 33, 134, 28);
+		textField_3.setBounds(243, 93, 134, 28);
 		spamTweet.add(textField_3);
 		textField_3.setColumns(10);
 		
 		JLabel lblEnterHowMany = new JLabel("Enter how many followers would be spam tweeted");
-		lblEnterHowMany.setBounds(47, 73, 355, 16);
+		lblEnterHowMany.setBounds(158, 134, 355, 16);
 		spamTweet.add(lblEnterHowMany);
 		
 		textField_4 = new JTextField();
-		textField_4.setBounds(152, 101, 134, 28);
+		textField_4.setBounds(243, 170, 134, 28);
 		spamTweet.add(textField_4);
 		textField_4.setColumns(10);
+
+		JComboBox comboBox = new JComboBox();
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// EXPLICITLY PLUS 1 IN ORDER TO MATCH DATABASE!!!!!!!
+				currentIndex = comboBox.getSelectedIndex() + 1;
+				System.out.println( "Current index " + comboBox.getSelectedIndex() );
+			}
+		});
+		comboBox.setBounds(243, 29, 134, 22);
+		System.out.println( "Linecount: " + database.getLineCount() );
+		for ( int i = 1 ; i <= database.getLineCount() ; i++ )
+		{
+			comboBox.addItem( database.getUsername(i));
+			
+		}
+		
+		spamTweet.add(comboBox);
+		
 		
 		
 		JLabel lblEnterTweet = new JLabel("Enter tweet");
 		lblEnterTweet.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEnterTweet.setBounds(173, 128, 94, 16);
+		lblEnterTweet.setBounds(268, 212, 94, 16);
 		spamTweet.add(lblEnterTweet);
 		
 		JButton btnConfirm = new JButton("Confirm");
@@ -659,21 +682,36 @@ public class TwitterGUIv2 {
 				String tweet = textField_5.getText();
 				
 				try {
+					AccessToken token = new AccessToken( database.getToken(currentIndex), database.getTokenSecret(currentIndex) );
+					Twitter twitter = new TwitterFactory().getInstance( token );
+					System.out.println( "Connected to " + database.getUsername(currentIndex) + " successfully!" );
 					PagableResponseList<User> followers = twitter.getFollowersList( username, -1, count );
 					
 					for ( int i = 0 ; i < count ; i++ )
 					{
-						twitter.updateStatus( "@"+followers.get(i).getScreenName()+" "+tweet+" " + (int)(Math.random()*500)    );
+						
+						try{
+
+							  Thread.sleep(5000);
+							  twitter.updateStatus( "@"+followers.get(i).getScreenName()+" "+tweet+" " + (int)(Math.random()*500)    );
+							}catch(InterruptedException ex){
+								
+							} 
 					}
 				} catch (TwitterException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+				
+				JOptionPane.showMessageDialog(null, "Spamming " + count + " followers of @" + username + " successful!", "Done!", JOptionPane.INFORMATION_MESSAGE );
 				
 				
 			}
 		});
-		btnConfirm.setBounds(162, 182, 117, 29);
+		btnConfirm.setBounds(257, 292, 117, 29);
 		spamTweet.add(btnConfirm);
 		
 		JButton btnBack_5 = new JButton("Back");
@@ -683,18 +721,25 @@ public class TwitterGUIv2 {
 				mainMenu.setVisible( true );
 			}
 		});
-		btnBack_5.setBounds(162, 223, 117, 29);
+		btnBack_5.setBounds(257, 334, 117, 29);
 		spamTweet.add(btnBack_5);
 		
 		textField_5 = new JTextField();
-		textField_5.setBounds(152, 143, 134, 28);
+		textField_5.setBounds(243, 241, 134, 28);
 		spamTweet.add(textField_5);
 		textField_5.setColumns(10);
+		
 
 		
-		JLabel lblNewLabel_9 = new JLabel("New label");
-		lblNewLabel_9.setIcon(new ImageIcon("/Users/djcedrics/Documents/Eclipse Workspace/TwitterTest/background.png"));
-		lblNewLabel_9.setBounds(0, 0, 499, 314);
+		JLabel lblSelectInstance = new JLabel("Select instance");
+		lblSelectInstance.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectInstance.setBounds(243, 13, 134, 16);
+		spamTweet.add(lblSelectInstance);
+
+		
+		JLabel lblNewLabel_9 = new JLabel("");
+		lblNewLabel_9.setIcon(new ImageIcon("resources/background.png"));
+		lblNewLabel_9.setBounds(0, 0, 603, 376);
 		spamTweet.add(lblNewLabel_9);
 	}
 }
