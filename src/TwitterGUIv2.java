@@ -471,6 +471,7 @@ public class TwitterGUIv2 {
 		retweet.add(lblNewLabel_5);
 		
 		JLabel label_1 = new JLabel("");
+		label_1.setHorizontalAlignment(SwingConstants.CENTER);
 		credits.addKeyListener(new KeyAdapter() {
 			
 
@@ -497,9 +498,9 @@ public class TwitterGUIv2 {
 		credits.setLayout(null);
 		
 		
-		label_1.setIcon(null);
+		label_1.setIcon(new ImageIcon("resources/isis1.png"));
 		label_1.setBackground(Color.BLACK);
-		label_1.setBounds(0, 0, 432, 265);
+		label_1.setBounds(24, 13, 542, 320);
 		credits.add(label_1);
 		JLabel lblNewLabel_7 = new JLabel("");
 		lblNewLabel_7.setBackground(new Color(0, 0, 0));
