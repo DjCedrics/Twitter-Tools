@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.Color;
 import java.awt.SystemColor;
@@ -60,18 +61,29 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
+
 import javax.swing.JComboBox;
 import javax.swing.BoxLayout;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
+
 import net.miginfocom.swing.MigLayout;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
 import com.jgoodies.forms.factories.FormFactory;
+
+import javax.swing.JCheckBox;
+import javax.swing.JTextPane;
+import javax.swing.JTextArea;
+import javax.swing.JTable;
 
 public class TwitterGUIv2 {
 
@@ -79,7 +91,6 @@ public class TwitterGUIv2 {
 	
 	private JFrame frmTwitterToolsV;
 	private JTextField textField;
-	private JTextField userName;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
@@ -90,6 +101,7 @@ public class TwitterGUIv2 {
 	
 	private int currentIndex;
 	private JTextField textField_7;
+	private JTextField textField_8;
 	
 	/**
 	 * Launch the application.
@@ -142,6 +154,11 @@ public class TwitterGUIv2 {
 		JPanel multiFollow = new JPanel();
 		JPanel spamTweet = new JPanel();
 		JPanel sendFollowers = new JPanel();
+		JPanel unfollowEggs = new JPanel();
+		
+		JComboBox comboBox_2 = new JComboBox();
+		
+		
 		credits.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -248,13 +265,17 @@ public class TwitterGUIv2 {
 		btnMultiFollow.setBounds(424, 106, 117, 29);
 		mainMenu.add(btnMultiFollow);
 		
-		JButton btnSpamTweet = new JButton("Spam Tweet");
-		btnSpamTweet.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mainMenu.setVisible( false );
-				spamTweet.setVisible( true );
-			}
-		});
+		try {
+			//TODO: Unfollow Egg Accounts
+			System.out.println( "User account link: " + twitter.showUser("nidakacanlar").getOriginalProfileImageURL() + "\n Default profile image: " + twitter.showUser("nidakacanlar").isDefaultProfileImage() );
+			// If account url is default_image etc. etc... UNFOLLOW ... Get userlist accordingly
+		}
+		
+		catch ( TwitterException e )
+		{
+			e.printStackTrace();
+		}
+		
 		
 		JButton btnNewButton = new JButton("Send Followers");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -265,7 +286,25 @@ public class TwitterGUIv2 {
 		});
 		btnNewButton.setBounds(415, 146, 138, 25);
 		mainMenu.add(btnNewButton);
-		btnSpamTweet.setBounds(424, 72, 117, 29);
+		
+		JButton btnNewButton_1 = new JButton("Unfollow Eggs");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mainMenu.setVisible( false );
+				unfollowEggs.setVisible( true );
+			}
+		});
+		btnNewButton_1.setBounds(425, 184, 128, 25);
+		mainMenu.add(btnNewButton_1);
+		
+		JButton btnSpamTweet = new JButton("Spam Tweet");
+		btnSpamTweet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mainMenu.setVisible( false );
+				spamTweet.setVisible( true );
+			}
+		});
+		btnSpamTweet.setBounds(424, 70, 117, 25);
 		mainMenu.add(btnSpamTweet);
 		
 		JLabel lblNewLabel = new JLabel("");
@@ -379,32 +418,122 @@ public class TwitterGUIv2 {
 		frmTwitterToolsV.getContentPane().add(unfollow, "name_10758969194209");
 		unfollow.setLayout(null);
 		
-		JLabel lblNewLabel_4 = new JLabel("Enter username to be unfollowed: ");
+		JLabel lblNewLabel_4 = new JLabel("This process will unfollow the users that do not follow you.");
 		lblNewLabel_4.setFont(new Font("Verdana", Font.PLAIN, 13));
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_4.setBounds(171, 190, 300, 44);
+		lblNewLabel_4.setBounds(97, 190, 452, 44);
 		unfollow.add(lblNewLabel_4);
 		
-		userName = new JTextField();
-		userName.setBounds(271, 247, 116, 22);
-		unfollow.add(userName);
-		userName.setColumns(10);
+		JCheckBox chckbxCheckIfThere = new JCheckBox("Do not unfollow this user");
+		chckbxCheckIfThere.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if ( chckbxCheckIfThere.isSelected() )
+				{
+					textField_8.setEditable( true );
+				}
+				else
+					textField_8.setEditable( false );
+			}
+		});
+		
+		
 		
 		JButton btnUnfollow_1 = new JButton("Unfollow");
-		btnUnfollow_1.addActionListener(new ActionListener() {
+		btnUnfollow_1.addActionListener(new ActionListener()  {
 			public void actionPerformed(ActionEvent e) {
+				AccessToken token = new AccessToken( database.getToken(currentIndex), database.getTokenSecret(currentIndex) );
+				Twitter twitter = new TwitterFactory().getInstance( token );
+				int testInt = 0;
+				int unfollowCount = 0;
 				try {
-					String unfollowName = userName.getText();
-					twitter.destroyFriendship( unfollowName );
-					JOptionPane.showMessageDialog(null, "Unfollowed @" + unfollowName , "Done!", JOptionPane.INFORMATION_MESSAGE );
-				} catch (TwitterException e1) {
+					String username = twitter.getScreenName();
+					int followerCount = twitter.showUser( username ).getFollowersCount();
 					
+					
+					PagableResponseList<User> followers = twitter.getFriendsList( username, -1 );
+					for ( User u : followers )
+					{
+						if ( !chckbxCheckIfThere.isSelected() )
+						{
+							if ( !twitter.showFriendship( username, u.getScreenName() ).isSourceFollowedByTarget() )
+							{
+								System.out.println( "This user does not follow you: " + u.getScreenName() );
+								
+								twitter.destroyFriendship(u.getScreenName());
+								unfollowCount++;
+							}
+						}
+						else
+						{
+							if ( !twitter.showFriendship( username, u.getScreenName() ).isSourceFollowedByTarget() )
+							{
+								System.out.println( "This user does not follow you: " + u.getScreenName() );
+								if ( u.getScreenName() != textField_8.getText() ) 
+								{
+									twitter.destroyFriendship(u.getScreenName());
+									unfollowCount++;
+								}
+							}							
+						}
+					}						
+					System.out.println( followerCount );
+					System.out.println( followers.size() );
+
+					while ( followers.hasNext() )
+					{
+						followers = twitter.getFriendsList( username, followers.getNextCursor(), 200 );
+						testInt = testInt + followers.size();
+						for ( User u : followers )
+						{
+							if ( !chckbxCheckIfThere.isSelected() )
+							{
+								if ( !twitter.showFriendship( username, u.getScreenName() ).isSourceFollowedByTarget() )
+								{
+									System.out.println( "This user does not follow you: " + u.getScreenName() );
+									
+									twitter.destroyFriendship(u.getScreenName());
+									unfollowCount++;
+								}
+							}
+							else
+							{
+								if ( !twitter.showFriendship( username, u.getScreenName() ).isSourceFollowedByTarget() )
+								{
+									System.out.println( "This user does not follow you: " + u.getScreenName() );
+									if ( u.getScreenName() != textField_8.getText() ) 
+									{
+										twitter.destroyFriendship(u.getScreenName());
+										unfollowCount++;
+									}
+								}							
+							}
+						}	
+					}
+					
+				}
+				catch ( TwitterException e1 )
+				{
+					JOptionPane.showMessageDialog(null, "Error while trying to unfollow the unfollowers.", "Error!", JOptionPane.INFORMATION_MESSAGE );
 					e1.printStackTrace();
-				}				
+				}
+				
+				try {
+					JOptionPane.showMessageDialog(null, "Unfollowed " + unfollowCount + " unfollowers of @" + twitter.getScreenName(), "Done!", JOptionPane.INFORMATION_MESSAGE );
+				} catch (HeadlessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IllegalStateException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (TwitterException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+								
 				
 			}
 		});
-		btnUnfollow_1.setBounds(279, 282, 97, 25);
+		btnUnfollow_1.setBounds(271, 282, 97, 25);
 		unfollow.add(btnUnfollow_1);
 		
 		JButton btnBack_2 = new JButton("Back");
@@ -414,8 +543,45 @@ public class TwitterGUIv2 {
 				mainMenu.setVisible( true );
 			}
 		});
-		btnBack_2.setBounds(279, 320, 97, 25);
+		btnBack_2.setBounds(271, 320, 97, 25);
 		unfollow.add(btnBack_2);
+		
+		JLabel lblSelectInstance_3 = new JLabel("Select instance");
+		lblSelectInstance_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectInstance_3.setBounds(217, 0, 200, 50);
+		unfollow.add(lblSelectInstance_3);
+		
+		JComboBox comboBox_3 = new JComboBox();
+		JPanel comboPanel = new JPanel();
+		comboBox_3.setOpaque( false );
+		comboPanel.setOpaque( false );
+		comboBox_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// EXPLICITLY PLUS 1 IN ORDER TO MATCH DATABASE!!!!!!!
+				currentIndex = comboBox_3.getSelectedIndex() + 1;
+				System.out.println( "Current index " + currentIndex );
+				
+			}
+		});
+		comboPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		comboPanel.add( comboBox_3 );
+		comboPanel.setBounds( 162, 47, 303, 35);
+		unfollow.add(comboPanel);
+		
+		textField_8 = new JTextField();
+		textField_8.setBounds(259, 125, 116, 22);
+		unfollow.add(textField_8);
+		textField_8.setColumns(10);
+		textField_8.setEditable( false );
+		
+		chckbxCheckIfThere.setOpaque( false );
+		chckbxCheckIfThere.setBounds(217, 91, 210, 25);
+		unfollow.add(chckbxCheckIfThere);
+		
+
+		
+		
+
 		
 		JLabel lblNewLabel_3 = new JLabel("");
 		lblNewLabel_3.setIcon(new ImageIcon("resources/background.png"));
@@ -701,6 +867,8 @@ public class TwitterGUIv2 {
 		{
 			comboBox.addItem( database.getUsername(i));
 			comboBox_1.addItem( database.getUsername(i));
+			comboBox_2.addItem( database.getUsername(i));
+			comboBox_3.addItem( database.getUsername(i));
 		}
 		
 		spamTweet.add(comboBox);
@@ -731,25 +899,19 @@ public class TwitterGUIv2 {
 						
 						try{
 
-							  Thread.sleep(5000);
 							  twitter.updateStatus( "@"+followers.get(i).getScreenName()+" "+tweet+" " + (int)(Math.random()*500)    );
-							}catch(InterruptedException ex){
-								
-							} 
+						} catch (TwitterException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
-				} catch (TwitterException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Spamming " + count + " followers of @" + username + " successful!", "Done!", JOptionPane.INFORMATION_MESSAGE );		
 				}
-				
-				JOptionPane.showMessageDialog(null, "Spamming " + count + " followers of @" + username + " successful!", "Done!", JOptionPane.INFORMATION_MESSAGE );
-				
-				
-			}
-		});
+
+				 catch (SQLException | TwitterException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace(); }
+			}});
 		btnConfirm.setBounds(257, 292, 117, 29);
 		spamTweet.add(btnConfirm);
 		
@@ -842,5 +1004,89 @@ public class TwitterGUIv2 {
 		lblNewLabel_10.setIcon(new ImageIcon("resources/background.png"));
 		lblNewLabel_10.setBounds(0, 0, 603, 376);
 		sendFollowers.add(lblNewLabel_10);
+		
+
+		frmTwitterToolsV.getContentPane().add(unfollowEggs, "name_33079724266813");
+		unfollowEggs.setLayout(null);
+		
+		JLabel lblSelectInstance_2 = new JLabel("Select instance");
+		lblSelectInstance_2.setBounds(240, 8, 86, 16);
+		unfollowEggs.add(lblSelectInstance_2);
+		
+		
+		comboBox_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				currentIndex = comboBox_2.getSelectedIndex() + 1;
+				System.out.println( "Current index " + currentIndex );
+			}
+		});
+		
+		
+		
+		
+		comboBox_2.setBounds(206, 39, 165, 22);
+		unfollowEggs.add(comboBox_2);
+		
+		JButton btnBack_7 = new JButton("Back");
+		btnBack_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				unfollowEggs.setVisible( false );
+				mainMenu.setVisible( true );
+				
+			}
+		});
+		btnBack_7.setBounds(229, 317, 97, 25);
+		unfollowEggs.add(btnBack_7);
+		
+		JButton btnUnfollow_2 = new JButton("Unfollow");
+		btnUnfollow_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//TODO: 
+				AccessToken token = new AccessToken( database.getToken(currentIndex), database.getTokenSecret(currentIndex) );
+				Twitter twitter = new TwitterFactory().getInstance( token );
+				int unfollowCount = 0;
+				int testInt = 0;
+				try {
+					String username = database.getUsername(currentIndex);
+					int followerCount = twitter.showUser( username ).getFollowersCount();
+					PagableResponseList<User> followers = twitter.getFriendsList( username, -1 );
+					System.out.println( followers.size() );
+					
+					while ( followers.hasNext() )
+					{
+						followers = twitter.getFriendsList( username, followers.getNextCursor(), 200 );
+						testInt = testInt + followers.size();
+						for ( User u : followers )
+						{
+							// If the user has egg profile image, unfollow and increment unfollow count by 1 each time.
+							if ( u.isDefaultProfileImage() )
+							{
+								System.out.println( "Egg user: " + u.getScreenName() );
+								
+								twitter.destroyFriendship(u.getScreenName());
+								unfollowCount++;
+							}
+						}	
+					}
+					
+					
+
+					
+					
+				} catch (TwitterException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				JOptionPane.showMessageDialog(null, "Unfollowed " + unfollowCount + " egg followers." , "Done!", JOptionPane.INFORMATION_MESSAGE );
+				
+				
+				
+			}
+		});
+		btnUnfollow_2.setBounds(229, 279, 97, 25);
+		unfollowEggs.add(btnUnfollow_2);
 	}
 }
